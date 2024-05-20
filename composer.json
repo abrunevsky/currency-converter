@@ -15,7 +15,8 @@
         "symfony/yaml": "7.0.*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.57"
+        "friendsofphp/php-cs-fixer": "^3.57",
+        "phpstan/phpstan": "^1.11"
     },
     "config": {
         "allow-plugins": {
@@ -48,12 +49,14 @@
     "scripts": {
         "phpcs:check": "php-cs-fixer check",
         "phpcs:fix": "php-cs-fixer fix",
+        "phpstan:check": "phpstan",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "pre-push": [
-            "phpcs:check"
+            "@phpcs:check",
+            "@phpstan:check"
         ],
         "post-install-cmd": [
             "@auto-scripts"
