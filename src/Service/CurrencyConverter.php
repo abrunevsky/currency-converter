@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Model\Money;
+
 class CurrencyConverter
 {
     public function __construct(
@@ -11,8 +13,12 @@ class CurrencyConverter
     ) {
     }
 
-    public function convert(float $sourceAmount, string $sourceCurrencyIso, string $targetCurrencyIso): float
+    public function convert(Money $sourceAmount, string $targetCurrencyIso): Money
     {
-        return (float) \bcmul((string) $sourceAmount, (string) $this->exchangeRateProvider->getRate($sourceCurrencyIso, $targetCurrencyIso), 5);
+        $targetAmount = new Money(0, $targetCurrencyIso);
+        $rate = $this->exchangeRateProvider->getRate($sourceAmount->iso, $targetAmount->iso);
+        $targetValue = (float) \bcmul((string) $sourceAmount->value, (string) $rate, 5);
+
+        return $targetAmount->withValue($targetValue);
     }
 }

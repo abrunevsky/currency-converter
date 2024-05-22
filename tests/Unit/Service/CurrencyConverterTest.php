@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Service;
 
+use App\Model\Money;
 use App\Service\CurrencyConverter;
 use App\Service\ExchangeRateProvider;
 use App\Tests\Unit\TestCase;
@@ -21,28 +22,30 @@ class CurrencyConverterTest extends TestCase
     }
 
     /**
-     * @return iterable<mixed>
+     * @return iterable<array{Money, string, float, float}>
      */
     public function convertCurrenciesProvider(): iterable
     {
-        yield ['USD', 100.0, 'BYN', 2.2001, 220.01];
+        yield [new Money(100.0, 'USD'), 'BYN', 2.2001, 220.01];
 
-        yield ['BYN', 112.0, 'USD', 0.5, 56.0];
+        yield [new Money(112.0, 'BYN'), 'USD', 0.5, 56.0];
+
+        yield [new Money(100, 'CUP'), 'USD', 1, 100.0];
     }
 
     /**
      * @dataProvider convertCurrenciesProvider
      */
-    public function testConvertCurrenciesWithSuccess(string $sourceIso, float $sourceAmount, string $targetIso, float $rateMock, float $expectedTargetAmount): void
+    public function testConvertCurrenciesWithSuccess(Money $sourceAmount, string $targetIso, float $rateMock, float $expectedTargetValue): void
     {
         $this->exchangeProviderMock->expects(self::once())
             ->method('getRate')
-            ->with($sourceIso, $targetIso)
+            ->with($sourceAmount->iso, $targetIso)
             ->willReturn($rateMock)
         ;
 
-        $targetAmount = $this->converter->convert($sourceAmount, $sourceIso, $targetIso);
+        $targetAmount = $this->converter->convert($sourceAmount, $targetIso);
 
-        self::assertSame($expectedTargetAmount, $targetAmount);
+        self::assertSame($expectedTargetValue, $targetAmount->value);
     }
 }

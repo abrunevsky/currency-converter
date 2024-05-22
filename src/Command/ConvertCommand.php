@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Model\Money;
 use App\Service\CurrencyConverter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -42,12 +43,13 @@ class ConvertCommand extends Command
         $styledOutput = new SymfonyStyle($input, $output);
         $styledOutput->title('Converter currency');
 
-        $sourceAmount = (float) $input->getArgument(self::SOURCE_AMOUNT);
-        $sourceCurrencyIso = $input->getArgument(self::SOURCE_CURRENCY_ISO);
-        $targetCurrencyIso = $input->getArgument(self::TARGET_CURRENCY_ISO);
+        $sourceAmount = new Money(
+            (float) $input->getArgument(self::SOURCE_AMOUNT),
+            $input->getArgument(self::SOURCE_CURRENCY_ISO)
+        );
 
         try {
-            $targetAmount = $this->converter->convert($sourceAmount, $sourceCurrencyIso, $targetCurrencyIso);
+            $targetAmount = $this->converter->convert($sourceAmount, $input->getArgument(self::TARGET_CURRENCY_ISO));
         } catch (\RuntimeException $exception) {
             $styledOutput->error($exception->getMessage());
 
@@ -58,8 +60,8 @@ class ConvertCommand extends Command
         $table->setHeaders(['Source', 'Target']);
         $table->setRows([
             [
-                self::formatMoney($sourceAmount, $sourceCurrencyIso),
-                self::formatMoney($targetAmount, $targetCurrencyIso),
+                self::formatMoney($sourceAmount),
+                self::formatMoney($targetAmount),
             ],
         ]);
         $table->render();
@@ -67,8 +69,8 @@ class ConvertCommand extends Command
         return self::SUCCESS;
     }
 
-    private static function formatMoney(float $amount, string $currencyIso): string
+    private static function formatMoney(Money $money): string
     {
-        return sprintf('%s %.2f', $currencyIso, $amount);
+        return sprintf('%s %.2f', $money->iso, $money->value);
     }
 }
