@@ -5,9 +5,10 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.2",
+        "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "ext-bcmath": "*",
+        "guzzlehttp/guzzle": "*",
         "symfony/console": "7.0.*",
         "symfony/dotenv": "7.0.*",
         "symfony/flex": "^2",
