@@ -50,7 +50,7 @@
         "symfony/polyfill-php82": "*"
     },
     "scripts": {
-        "phpcs:check": "php-cs-fixer check",
+        "phpcs:check": "php-cs-fixer check -v",
         "phpcs:fix": "php-cs-fixer fix",
         "phpstan:check": "phpstan",
         "test": "bin/phpunit",
