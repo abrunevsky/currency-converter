@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Service\ExchangeSource\CbrRu;
 
-use App\Service\ExchangeSource\CbrRu\CbrSupportedCurrenciesProvider;
+use App\Service\ExchangeSource\CbrRu\CbrCurrenciesProvider;
 
-class CbrSupportedCurrenciesProviderTest extends AbstractCbrTestCase
+class CbrCurrenciesProviderTest extends AbstractCbrTestCase
 {
-    private CbrSupportedCurrenciesProvider $provider;
+    private CbrCurrenciesProvider $provider;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->provider = new CbrSupportedCurrenciesProvider($this->clientMock);
+        $this->provider = new CbrCurrenciesProvider($this->clientMock);
     }
 
     public function testGetListWillReturnArray(): void

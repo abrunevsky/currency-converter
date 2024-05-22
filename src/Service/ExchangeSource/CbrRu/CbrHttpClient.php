@@ -7,7 +7,7 @@ namespace App\Service\ExchangeSource\CbrRu;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 
-class HttpClient
+class CbrHttpClient
 {
     private const ENDPOINT = 'https://www.cbr.ru/scripts/XML_daily_eng.asp';
 

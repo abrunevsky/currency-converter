@@ -9,7 +9,7 @@ use App\Service\ExchangeRateProvider;
 class CbrExchangeRateProvider implements ExchangeRateProvider
 {
     public function __construct(
-        private readonly HttpClient $client
+        private readonly CbrHttpClient $client
     ) {
     }
 
@@ -21,11 +21,11 @@ class CbrExchangeRateProvider implements ExchangeRateProvider
 
         $rate = 1;
 
-        if (BaseCurrency::ISO !== $sourceIso) {
+        if (CbrBaseCurrency::ISO !== $sourceIso) {
             $rate = (float) \bcmul((string) $rate, (string) $ratesMap[$sourceIso], 5);
         }
 
-        if (BaseCurrency::ISO !== $targetIso) {
+        if (CbrBaseCurrency::ISO !== $targetIso) {
             $rate = (float) \bcdiv((string) $rate, (string) $ratesMap[$targetIso], 5);
         }
 
@@ -38,7 +38,7 @@ class CbrExchangeRateProvider implements ExchangeRateProvider
     private function fetchRatesMap(): array
     {
         $xml = $this->client->loadXml();
-        $rates = [BaseCurrency::ISO => 1.0];
+        $rates = [CbrBaseCurrency::ISO => 1.0];
 
         foreach ($xml->Valute as $valute) {
             $rates[strtoupper((string) $valute->CharCode)] = (float) str_replace(',', '.', (string) $valute->VunitRate);
