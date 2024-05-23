@@ -1,11 +1,20 @@
 # Installation
-1. Copy file `/.env.dev` to `/.env`
-2. Build docker containers with command
+1. Clone project from the repo to the selected directory:
    ```sh
-   docker compose build
+   git clone https://github.com/abrunevsky/currency-converter.git ./
+   ```
+3. Prepare local `.env` file with command
+  ```sh
+  cp .env.dev .env
+  ```
+5. Build docker containers with command
+   ```sh
+   docker compose up -d --build &&\
+      docker compose exec php composer install && \
+      docker compose down
    ```
 
-# Start / Stop services (`dev` mode only)
+# Start / Stop project
 Start with 
 ```sh
 docker compose up -d
@@ -17,7 +26,7 @@ docker compose down
 ```
 
 # Usage
-Before the next steps make sure that docker services are started.
+Before the next steps make sure that the project is started.
 
 ## CLI commands
 1. Get list of all available currencies:
@@ -31,8 +40,8 @@ Before the next steps make sure that docker services are started.
 
 ## Http API endpoints
 1. Get list of all available currencies:
-   ```
-   GET http://localhost:8000/currencies
+   ```sh
+   curl -s http://localhost:8000/currencies
    ```
    Returns JSON data map in a format like this:
    ```json
@@ -44,8 +53,8 @@ Before the next steps make sure that docker services are started.
    }
    ```
 3. Convert some amount from sourse currency to target:
-   ```
-   GET http://localhost:8000/convert/<source-iso>/<source-amount>/<target-iso>
+   ```sh
+   curl -s http://localhost:8000/convert/<source-iso>/<source-amount>/<target-iso>
    ```
    For example, the following GET request `http://localhost:8000/convert/EUR/10/BYN` could return this JSON response:
    ```json
