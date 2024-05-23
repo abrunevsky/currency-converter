@@ -9,7 +9,7 @@
   ```
 5. Build docker containers with command
    ```sh
-   docker compose up -d --build &&\
+   docker compose up -d --build && \
       docker compose exec php composer install && \
       docker compose down
    ```
@@ -64,5 +64,6 @@ Before the next steps make sure that the project is started.
      },
      "target": {
        "BYN": 34.7443
+     }
    }
    ```
