@@ -9,7 +9,7 @@ use App\Service\SupportedCurrenciesProvider;
 class CbrCurrenciesProvider implements SupportedCurrenciesProvider
 {
     public function __construct(
-        private readonly CbrHttpClient $client
+        private readonly CbrHttpClientInterface $client
     ) {
     }
 

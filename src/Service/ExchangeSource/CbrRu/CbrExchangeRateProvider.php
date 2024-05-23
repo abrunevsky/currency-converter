@@ -9,7 +9,7 @@ use App\Service\ExchangeRateProvider;
 class CbrExchangeRateProvider implements ExchangeRateProvider
 {
     public function __construct(
-        private readonly CbrHttpClient $client
+        private readonly CbrHttpClientInterface $client
     ) {
     }
 
