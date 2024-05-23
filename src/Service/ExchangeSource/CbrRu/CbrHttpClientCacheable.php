@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\ExchangeSource\CbrRu;
 
-use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class CbrHttpClientCacheable implements CbrHttpClientInterface
 {
@@ -20,9 +20,10 @@ class CbrHttpClientCacheable implements CbrHttpClientInterface
 
     public function loadXml(): \SimpleXMLElement
     {
-        $serialisedXml = $this->cache->get(self::CAHCE_KEY, function(CacheItem $item) {
+        $serialisedXml = $this->cache->get(self::CAHCE_KEY, function (ItemInterface $item) {
             $item->expiresAfter($this->ttl);
-            return $this->client->loadXml()->asXML();
+
+            return (string) $this->client->loadXml()->asXML();
         });
 
         return new \SimpleXMLElement($serialisedXml);
