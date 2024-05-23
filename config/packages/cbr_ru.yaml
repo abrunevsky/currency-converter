@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\Service\ExchangeSource\CbrRu\CbrHttpClientInterface:
+        class: App\Service\ExchangeSource\CbrRu\CbrHttpClientCacheable
+        arguments:
+            $client: '@App\Service\ExchangeSource\CbrRu\CbrHttpClient'
+            $ttl: 3600
+
