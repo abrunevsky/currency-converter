@@ -43,12 +43,12 @@ class ConvertCommand extends Command
         $styledOutput = new SymfonyStyle($input, $output);
         $styledOutput->title('Converter currency');
 
-        $sourceAmount = new Money(
-            (float) $input->getArgument(self::SOURCE_AMOUNT),
-            $input->getArgument(self::SOURCE_CURRENCY_ISO)
-        );
-
         try {
+            $sourceAmount = new Money(
+                (float) $input->getArgument(self::SOURCE_AMOUNT),
+                $input->getArgument(self::SOURCE_CURRENCY_ISO)
+            );
+
             $targetAmount = $this->converter->convert($sourceAmount, $input->getArgument(self::TARGET_CURRENCY_ISO));
         } catch (\RuntimeException $exception) {
             $styledOutput->error($exception->getMessage());
@@ -71,6 +71,6 @@ class ConvertCommand extends Command
 
     private static function formatMoney(Money $money): string
     {
-        return sprintf('%s %.2f', $money->iso, $money->value);
+        return sprintf('%s %.2f', $money->currency, $money->value);
     }
 }

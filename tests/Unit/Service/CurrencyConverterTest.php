@@ -40,7 +40,7 @@ class CurrencyConverterTest extends TestCase
     {
         $this->exchangeProviderMock->expects(self::once())
             ->method('getRate')
-            ->with($sourceAmount->iso, $targetIso)
+            ->with($sourceAmount->currency, $targetIso)
             ->willReturn($rateMock)
         ;
 

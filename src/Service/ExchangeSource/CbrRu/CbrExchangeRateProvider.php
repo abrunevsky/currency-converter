@@ -53,7 +53,7 @@ class CbrExchangeRateProvider implements ExchangeRateProvider
     private static function assertCurrencySupported(array $ratesMap, string $iso, string $typeName): void
     {
         if (!array_key_exists($iso, $ratesMap)) {
-            throw new \RuntimeException(sprintf('Unsupported %s currency provided: "%s"', $typeName, $iso));
+            throw new \DomainException(sprintf('Unsupported %s currency provided: "%s"', $typeName, $iso));
         }
     }
 }

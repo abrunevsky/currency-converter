@@ -16,7 +16,7 @@ class CurrencyConverter
     public function convert(Money $sourceAmount, string $targetCurrencyIso): Money
     {
         $targetAmount = new Money(0, $targetCurrencyIso);
-        $rate = $this->exchangeRateProvider->getRate($sourceAmount->iso, $targetAmount->iso);
+        $rate = $this->exchangeRateProvider->getRate($sourceAmount->currency, $targetAmount->currency);
         $targetValue = (float) \bcmul((string) $sourceAmount->value, (string) $rate, 5);
 
         return $targetAmount->withValue($targetValue);
